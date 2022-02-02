@@ -170,6 +170,9 @@ def normalize_domain(domain: str) -> bytes:
     :class:`str`.
     """
 
+    if "/" in domain or "@" in domain:
+        raise ValueError("domain name must not include username or resource")
+
     domain = domain.rstrip(".")
     if domain.startswith("."):
         raise ValueError("domain name must not start with a dot")
