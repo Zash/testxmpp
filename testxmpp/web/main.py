@@ -77,6 +77,16 @@ async def index():
 @bp.route("/scan/queue", methods=["GET", "POST"])
 async def queue_scan():
     form_data = await request.form
+    if not form_data["protocol"] in { "c2s", "s2s", }:
+        return abort(400, "Missing or invalid 'protocol' field")
+    if not form_data["domain"]:
+        return abort(400, "Missing 'domain' field")
+    try:
+        form_data["domain"].encode("idna")
+    except UnicodeError:
+        return abort(400, "Invalid 'domain' field, failed IDNA")
+    if "@" in form_data["domain"] or "/" in form_data["domain"] or ":" in form_data["domain"]:
+        return abort(400, "Invalid 'domain' field, not a bare domain")
     scan_request = coordinator_api.mkv1request(
         coordinator_api.RequestType.SCAN_DOMAIN,
         {
