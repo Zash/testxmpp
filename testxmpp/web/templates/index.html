@@ -14,7 +14,7 @@
 	<div class="card">
 		<h2>{% trans %}Test a server{% endtrans %}</h2>
 		<form class="quickscan" method="POST" action="{{ url_for('main.queue_scan') }}">
-			<div><label for="domain">Domain</label><input type="text" name="domain" id="domain" placeholder="jabber.org"></div>
+			<div><label for="domain">Domain</label><input type="text" name="domain" id="domain" placeholder="jabber.org" required min="3" max="255" pattern="([^\s_]\S*\.)+[^\s_]\S*"></div>
 			<div><label for="protocol">Protocol</label><select id="protocol" name="protocol">
 				<option label="Client-to-Server" value="c2s"/>
 				<option label="Server-to-Server" value="s2s"/>
